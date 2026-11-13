@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>If Clause Quiz: เหตุและผล</title>
+<style>
+  :root{
+    --bg:#f4f6fb; --card:#fff; --ink:#1f2937; --muted:#6b7280; --line:#e5e7eb;
+    --primary:#4f46e5; --primary-dark:#4338ca; --soft:#eef2ff;
+    --ok:#16a34a; --ok-bg:#dcfce7; --bad:#dc2626; --bad-bg:#fee2e2; --warn-bg:#fef3c7;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans Thai","Sarabun","Segoe UI",Tahoma,sans-serif;line-height:1.45;padding-bottom:120px}
+  .wrap{max-width:720px;margin:0 auto;padding:12px}
+  h1{font-size:1.4rem;margin:6px 0 2px}
+  .sub{color:var(--muted);font-size:.95rem;margin:0 0 12px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px}
+  label{display:block;font-weight:600;margin:10px 0 4px}
+  input[type=text]{width:100%;padding:12px;font-size:1rem;border:1px solid #cbd5e1;border-radius:10px;font-family:inherit}
+  .row{display:flex;gap:10px}.row>div{flex:1}
+  button{font-family:inherit;font-size:1rem;border:0;border-radius:12px;padding:11px 16px;cursor:pointer;background:var(--primary);color:#fff;font-weight:600}
+  button:hover{background:var(--primary-dark)}
+  button:disabled{opacity:.45;cursor:not-allowed}
+  button.ghost{background:var(--soft);color:var(--primary)}
+  button.ghost:hover{background:#e0e7ff}
+  .btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+  .btnrow button.main{flex:1}
+  .hidden{display:none!important}
+  .note{font-size:.88rem;color:var(--muted)}
+  .hint{color:#475569;font-size:.95rem}
+  .fb{margin:8px 0;padding:10px 12px;border-radius:10px;font-size:.98rem}
+  .fb.bad{background:var(--bad-bg);color:#7f1d1d}
+
+  .top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px}
+  .pill{background:var(--soft);color:var(--primary);padding:3px 12px;border-radius:99px;font-weight:700;font-size:.95rem}
+  .bar{display:flex;gap:3px;margin-bottom:8px}
+  .bar span{flex:1;height:7px;border-radius:99px;background:#e2e8f0}
+  .bar span.ok{background:var(--ok)} .bar span.bad{background:var(--bad)} .bar span.now{background:#a5b4fc}
+  .how{font-size:.88rem;color:var(--muted);margin-bottom:8px}
+
+  .qcard{background:#fff;border:2px solid var(--line);border-radius:16px;padding:12px}
+  .qrow{display:flex;gap:8px;align-items:flex-start}
+  .num{flex:none;width:30px;height:30px;border-radius:50%;background:var(--primary);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:.95rem;margin-top:1px}
+  .qtxt{flex:1;font-size:1.2rem;font-weight:700}
+  .blank{color:var(--primary);letter-spacing:1px}
+  .w{cursor:pointer;border-bottom:1px dotted #94a3b8;padding:0 1px;border-radius:4px}
+  .w:hover,.w.on{background:#fde68a}
+  .mini{padding:4px 10px;font-size:.85rem;border-radius:10px;flex:none}
+  .opts{margin-top:10px;display:flex;flex-direction:column;gap:8px}
+  .opt{display:flex;gap:10px;align-items:center;border:2px solid var(--line);border-radius:12px;padding:8px 10px;background:#fff;cursor:pointer}
+  .opt.sel{border-color:var(--primary);background:#eef2ff}
+  .opt.ok{border-color:var(--ok);background:var(--ok-bg)}
+  .opt.bad{border-color:var(--bad);background:var(--bad-bg)}
+  .opt.dim{opacity:.6}
+  .letter{flex:none;width:38px;height:38px;border-radius:50%;padding:0;font-size:1.05rem;background:var(--soft);color:var(--primary)}
+  .opt.sel .letter{background:var(--primary);color:#fff}
+  .opt.ok .letter{background:var(--ok);color:#fff}
+  .opt.bad .letter{background:var(--bad);color:#fff}
+  .otxt{flex:1;font-size:1.1rem;font-weight:600}
+  .mark{flex:none;font-size:1.2rem}
+  .fbox{margin-top:10px;padding:10px 12px;border-radius:10px;font-size:1.02rem}
+  .fbox.ok{background:var(--ok-bg);color:#14532d}
+  .fbox.bad{background:var(--bad-bg);color:#7f1d1d}
+
+  #gloss{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:3px solid var(--primary);box-shadow:0 -6px 20px rgba(0,0,0,.12);padding:8px 14px;z-index:50}
+  #gloss .in{max-width:720px;margin:0 auto;display:flex;gap:10px;align-items:center}
+  #gloss .head{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+  #gloss .bigw{font-size:1.45rem;font-weight:800;color:var(--primary)}
+  #gloss .pron{font-size:1rem;color:#0f766e;font-weight:700}
+  #gloss .mean{font-size:1rem}
+  #gloss .foot{font-size:.74rem;color:var(--muted)}
+  #gloss .speak{flex:none;width:46px;height:46px;border-radius:50%;font-size:1.25rem;padding:0}
+
+  .score{text-align:center;padding:8px 0}
+  .score .big{font-size:3.6rem;font-weight:800;color:var(--primary);line-height:1}
+  .score .of{font-size:1.2rem;color:var(--muted)}
+  .rl{padding:8px 10px;border-radius:10px;margin:6px 0;background:#f8fafc;font-size:1rem}
+  .rl.ok{background:var(--ok-bg)} .rl.bad{background:var(--bad-bg)}
+  .rl small{display:block;color:#7c2d12}
+  .crit{display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid var(--line)}
+  .crit:first-of-type{border-top:0}
+  @media print{ #gloss,.noprint{display:none} body{padding-bottom:0} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <section id="screenStart">
+    <h1>🔗 If Clause Quiz</h1>
+    <p class="sub">เลือก “ผล” ที่สมเหตุสมผลกับ “เหตุ” · If + Present, will + V1 · ม.3</p>
+    <div class="card">
+      <label for="fName">ชื่อ-นามสกุล</label>
+      <input type="text" id="fName" placeholder="เช่น สมชาย ใจดี" autocomplete="off">
+      <div class="row">
+        <div><label for="fNo">เลขที่</label><input type="text" id="fNo" inputmode="numeric" autocomplete="off"></div>
+        <div><label for="fClass">ห้อง ม.3/</label><input type="text" id="fClass" inputmode="numeric" autocomplete="off"></div>
+      </div>
+    </div>
+    <div class="card">
+      <b>วิธีเล่น</b>
+      <ol class="hint" style="padding-left:20px;margin:6px 0">
+        <li>มี 20 ข้อ ข้อละ 1 คะแนน (เต็ม 20) ทำทีละข้อ</li>
+        <li>แต่ละข้อมีประโยคส่วน <b>If</b> และตัวเลือก 4 ข้อ (A–D) ให้เลือกผลที่เกิดขึ้นที่สมเหตุสมผลที่สุด</li>
+        <li>กดวงกลม <b>A B C D</b> เพื่อเลือก แล้วกด “ยืนยันคำตอบ” (ยืนยันแล้วแก้ไม่ได้)</li>
+        <li><b>แตะคำภาษาอังกฤษคำไหนก็ได้</b> จะเห็นคำอ่านและคำแปลไทยที่แถบด้านล่าง ไม่เสียคะแนน</li>
+        <li>ตอบข้อไหนแล้ว <b>นับคะแนนจากการตอบครั้งแรกเท่านั้น</b> แก้ไม่ได้ กดปุ่ม <b>🏠 Home</b> ออกไปแล้วกลับมาทำต่อได้ ข้อที่ทำแล้วไม่หาย</li>
+        <li>จบ 20 ข้อแล้วจะได้ Score Report ให้ถ่ายภาพหน้าจอส่งครู (หลังจบ ฝึกซ้ำได้ แต่ไม่นับคะแนน)</li>
+      </ol>
+    </div>
+    <div id="homeStatus" class="fb hidden" style="background:#eef2ff;color:#3730a3;font-weight:600"></div>
+    <div class="btnrow"><button class="main" id="startBtn">เริ่มเล่น ▶</button><button class="main ghost hidden" id="practiceBtn">ฝึกอีกครั้ง (ไม่นับคะแนน)</button></div>
+    <p id="startErr" class="fb bad hidden">กรุณากรอกชื่อ เลขที่ และห้องให้ครบก่อนเริ่มเล่น</p>
+  </section>
+
+  <section id="screenGame" class="hidden">
+    <div class="top"><button class="ghost mini" id="homeBtn">🏠 Home</button><span class="pill" id="qPill"></span><span class="pill" id="scorePill"></span></div>
+    <div class="how hidden" id="practiceBanner" style="background:#fef3c7;color:#92400e;padding:6px 10px;border-radius:10px;font-weight:700">🧪 โหมดฝึก: ไม่นับคะแนน</div>
+    <div class="bar" id="bar"></div>
+    <div class="how">เลือกวงกลม A–D แล้วกดยืนยัน · แตะ <b>คำ</b> เพื่อดูคำอ่าน/คำแปล</div>
+    <div class="qcard" id="qcard"></div>
+    <div class="btnrow noprint">
+      <button class="main" id="confirmBtn" disabled>ยืนยันคำตอบ ✓</button>
+      <button class="main hidden" id="nextBtn">ข้อต่อไป ▶</button>
+    </div>
+  </section>
+
+  <section id="screenReport" class="hidden">
+    <h1 id="repTitle">📋 Score Report</h1>
+    <p class="sub" id="repSub">If Clause Quiz: เหตุและผล · นับคะแนนจากการตอบครั้งแรก</p>
+    <div id="repBanner" class="fb hidden" style="background:#fef3c7;color:#92400e;font-weight:700"></div>
+    <div class="card">
+      <div class="note" id="repId"></div>
+      <div class="score"><span class="big" id="repScore">0</span><span class="of"> / 20</span>
+        <div id="repMsg" style="font-weight:700;margin-top:4px"></div></div>
+      <div id="repGroups"></div>
+    </div>
+    <div class="card">
+      <b>สรุปทุกข้อ</b>
+      <div id="repList"></div>
+    </div>
+    <div class="card noprint">
+      <b>📸 ส่งงาน</b>
+      <p class="hint">ถ่ายภาพหน้าจอ (screenshot) หน้า Score Report นี้ทั้งหน้า แล้วส่งให้ครู ต้องเห็นชื่อ เลขที่ ห้อง และคะแนนครบ</p>
+      <div class="btnrow"><button class="ghost" id="restartBtn">🏠 กลับหน้า Home</button></div>
+    </div>
+  </section>
+</div>
+
+<div id="gloss" class="noprint hidden">
+  <div class="in">
+    <div style="flex:1">
+      <div class="head"><span class="bigw" id="gWord"></span><span class="pron" id="gPron"></span></div>
+      <div class="mean" id="gMean">👆 แตะคำภาษาอังกฤษคำไหนก็ได้ เพื่อดูคำอ่านและคำแปล</div>
+      <div class="foot" id="gFoot" style="display:none">คำอ่านไทยเป็นแนวทางโดยประมาณ ฟังเสียงจริงที่ปุ่ม 🔊</div>
+    </div>
+    <button class="speak" id="gSpeak" style="display:none" aria-label="ฟังเสียง">🔊</button>
+  </div>
+</div>
+
+<script id="data">
+// ====== ข้อมูลเกม (ครูแก้ได้) ======
+// [ส่วน If, ผลที่ถูก, [ตัวเลือกหลอก 3 ข้อ]]  ลำดับตัวเลือกจะสลับให้เองทุกครั้ง
+const ITEMS = [
+  ["If you brush your teeth every night,","your teeth will be healthy.",["your teeth will be dirty.","I will wear a jacket.","the ice will melt."]],
+  ["If you exercise every day,","you will be strong.",["you will be weak.","we will save electricity.","she will be happy."]],
+  ["If you forget your umbrella,","you will get wet.",["you will get hurt.","you will learn new words.","the phone will not work."]],
+  ["If the traffic is bad,","we will be late for school.",["we will be early for school.","we will help the earth.","you will play football well."]],
+  ["If you eat breakfast,","you will have energy in class.",["you will be hungry in class.","I will buy a new phone.","the door will open."]],
+
+  ["If I save my money,","I will buy a new phone.",["I will have no money.","I will lose my key.","the ice will melt."]],
+  ["If you press this button,","the door will open.",["we will watch a movie.","I will ask my mother for help.","you will get hurt."]],
+  ["If the battery is dead,","the phone will not work.",["the phone will work well.","she will be happy.","you will be strong."]],
+  ["If we use paper bags,","we will help the earth.",["we will use more plastic.","you will learn new words.","she will be happy."]],
+  ["If you touch the fire,","you will get hurt.",["you will be cold.","you will learn new words.","I will buy a new phone."]],
+
+  ["If you read English books,","you will learn new words.",["you will forget new words.","the phone will not work.","we will be late for school."]],
+  ["If you run across the road,","you will have an accident.",["the ice will melt.","she will be happy.","your teeth will be healthy."]],
+  ["If the sun comes out,","the ice will melt.",["the door will open.","we will save electricity.","you will get hurt."]],
+  ["If you do not water the plants,","they will die.",["they will grow.","we will be late for school.","I will buy a new phone."]],
+  ["If we turn off the TV,","we will save electricity.",["we will use more electricity.","you will get wet.","the door will open."]],
+
+  ["If it is very cold,","I will wear a jacket.",["I will wear shorts.","the ice will melt.","you will have an accident."]],
+  ["If you help your mother,","she will be happy.",["she will be angry.","I will lose my key.","the plants will die."]],
+  ["If you practise every day,","you will play football well.",["you will play football badly.","I will lose my key.","we will save electricity."]],
+  ["If I lose my key,","I will ask my mother for help.",["I will buy a new phone.","the ice will melt.","I will wear a jacket."]],
+  ["If you sleep in class,","you will not understand the lesson.",["you will understand the lesson.","you will learn new words.","you will be strong."]]
+];
+
+// คำอ่านไทย (โดยประมาณ) + คำแปล ของทุกคำในเกม
+const LEX = {
+ "if":["อิฟ","ถ้า"],"you":["ยู","คุณ / เธอ"],"your":["ยัวร์","ของคุณ"],"brush":["บรัช","แปรง"],"teeth":["ทีธ","ฟัน (หลายซี่)"],
+ "every":["เอ็ฟ-รี","ทุกๆ"],"night":["ไนท์","กลางคืน"],"will":["วิล","จะ"],"be":["บี","เป็น / อยู่ / คือ"],"healthy":["เฮล-ธี","แข็งแรง สุขภาพดี"],
+ "exercise":["เอ็ก-เซอร์-ไซส์","ออกกำลังกาย"],"day":["เดย์","วัน"],"strong":["สตรอง","แข็งแรง มีกำลัง"],"forget":["ฟอร์-เก็ท","ลืม"],
+ "umbrella":["อัม-เบรล-ลา","ร่ม"],"get":["เก็ท","ได้รับ / กลายเป็น (get wet = เปียก)"],"wet":["เว็ท","เปียก"],"the":["เดอะ","(คำนำหน้านาม ไม่มีคำแปล)"],
+ "traffic":["แทร-ฟิก","การจราจร รถติด"],"is":["อิซ","เป็น / อยู่ / คือ"],"bad":["แบ็ด","แย่ ไม่ดี"],"we":["วี","พวกเรา"],"late":["เลท","สาย ช้า"],
+ "for":["ฟอร์","สำหรับ / ไป (เช่น late for school = สายไปโรงเรียน)"],"school":["สคูล","โรงเรียน"],"eat":["อีท","กิน"],"breakfast":["เบร็ค-ฟัสท์","อาหารเช้า"],
+ "have":["แฮ็ฟ","มี / กิน"],"energy":["เอ็น-เนอร์-จี","พลังงาน แรง"],"in":["อิน","ใน"],"class":["คลาส","ห้องเรียน ชั้นเรียน"],
+ "i":["ไอ","ฉัน"],"my":["ไม","ของฉัน"],"save":["เซฟ","เก็บออม / ประหยัด"],"money":["มัน-นี","เงิน"],"buy":["บาย","ซื้อ"],"a":["อะ","หนึ่ง (คำนำหน้านาม)"],
+ "new":["นิว","ใหม่"],"phone":["โฟน","โทรศัพท์"],"press":["เพรส","กด"],"this":["ดิส","นี้"],"button":["บัท-ทึน","ปุ่ม"],"door":["ดอร์","ประตู"],
+ "open":["โอ-เพิน","เปิด"],"battery":["แบ็ท-เทอ-รี","แบตเตอรี่"],"dead":["เด็ด","หมด (แบตหมด) / ตาย"],"not":["นอท","ไม่"],"work":["เวิร์ก","ทำงาน / ใช้งานได้"],
+ "use":["ยูส","ใช้"],"paper":["เพ-เพอร์","กระดาษ"],"bags":["แบ็ก-ส์","ถุง กระเป๋า (หลายใบ)"],"help":["เฮลพ์","ช่วย"],"earth":["เอิร์ธ","โลก"],
+ "touch":["ทัช","แตะ สัมผัส"],"fire":["ไฟร์","ไฟ"],"hurt":["เฮิร์ท","เจ็บ บาดเจ็บ"],"read":["รีด","อ่าน"],"english":["อิง-กลิช","ภาษาอังกฤษ"],
+ "books":["บุ๊ค-ส์","หนังสือ (หลายเล่ม)"],"learn":["เลิร์น","เรียนรู้"],"words":["เวิร์ด-ส์","คำศัพท์ (หลายคำ)"],"run":["รัน","วิ่ง"],
+ "across":["อะ-ครอส","ข้าม"],"road":["โรด","ถนน"],"an":["แอน","หนึ่ง (คำนำหน้านาม ใช้หน้าเสียงสระ)"],"accident":["แอค-ซิ-เดินท์","อุบัติเหตุ"],
+ "sun":["ซัน","ดวงอาทิตย์ แดด"],"comes":["คัมส์","มา (comes out = โผล่ออกมา)"],"out":["เอาท์","ออก ข้างนอก"],"ice":["ไอซ์","น้ำแข็ง"],
+ "melt":["เม็ลท์","ละลาย"],"do":["ดู","ทำ (do not = ไม่ ใช้ปฏิเสธ)"],"water":["วอ-เตอร์","รดน้ำ / น้ำ"],"plants":["แพลนท์-ส","ต้นไม้ พืช (หลายต้น)"],
+ "they":["เดย์","พวกเขา / พวกมัน"],"die":["ได","ตาย"],"turn":["เทิร์น","หมุน / เปลี่ยน (turn off = ปิด)"],"off":["ออฟ","ปิด (เครื่อง/ไฟ)"],
+ "tv":["ที-วี","โทรทัศน์"],"electricity":["อิ-เล็ก-ทริส-ซิ-ตี","ไฟฟ้า"],"it":["อิท","มัน / อากาศ (it is cold = อากาศหนาว)"],"very":["เว-รี","มาก"],
+ "cold":["โคลด์","หนาว เย็น"],"wear":["แวร์","สวมใส่"],"jacket":["แจ็ค-เก็ท","เสื้อแจ็คเก็ต"],"mother":["มัธ-เธอร์","แม่"],
+ "she":["ชี","เธอ (ผู้หญิง)"],"happy":["แฮ็พ-พี","มีความสุข"],"practise":["แพร็ค-ทิส","ฝึกซ้อม"],"play":["เพลย์","เล่น"],
+ "football":["ฟุต-บอล","ฟุตบอล"],"well":["เวล","เก่ง ดี"],"lose":["ลูซ","ทำหาย"],"key":["คีย์","กุญแจ"],"ask":["อาสค์","ขอ / ถาม"],
+ "sleep":["สลีพ","นอนหลับ"],"understand":["อัน-เดอร์-แสตนด์","เข้าใจ"],"lesson":["เล็ส-เซิน","บทเรียน"],"go":["โก","ไป"],"to":["ทู","ไปยัง"],
+ "father":["ฟา-เธอร์","พ่อ"],"cook":["คุ๊ก","ทำอาหาร"],"dinner":["ดิน-เนอร์","อาหารเย็น"],"visit":["วิส-ซิท","ไปเยี่ยม"],"her":["เฮอร์","ของเธอ"],
+ "grandmother":["แกรน-มัธ-เธอร์","คุณยาย / คุณย่า"],"watch":["วอทช์","ดู"],"movie":["มู-วี","ภาพยนตร์"],"shopping":["ช็อพ-ปิง","การไปซื้อของ"],
+ "dirty":["เดอ-ที","สกปรก"],"weak":["วีค","อ่อนแอ ไม่แข็งแรง"],"early":["เออร์-ลี","เร็ว / แต่เช้า"],"hungry":["ฮัง-กรี","หิว"],
+ "no":["โน","ไม่มี / ไม่"],"plastic":["แพลส-ติก","พลาสติก"],"more":["มอร์","มากกว่า / เพิ่มขึ้น"],"grow":["โกรว์","เติบโต งอกงาม"],
+ "angry":["แอง-กรี","โกรธ"],"badly":["แบ็ด-ลี","แย่ ไม่ดี (เช่น เล่นไม่เก่ง)"],"shorts":["ชอร์ทส์","กางเกงขาสั้น"]
+};
+</script>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const N = ITEMS.length, LETTERS = ["A","B","C","D"];
+
+  let me = {name:"",no:"",cls:""}, key = "";
+  let mode = "score";                 // "score" = นับคะแนน (ครั้งแรกเท่านั้น), "practice" = ฝึก ไม่นับ
+  let qi = 0, opts = [], picked = null, confirmed = false;
+  let results = new Array(N).fill(null);   // ผลครั้งแรกของแต่ละข้อ (นับคะแนน)
+  let practice = new Array(N).fill(null);  // ผลโหมดฝึก (ไม่นับ)
+  const mem = {};                          // เก็บความคืบหน้าของแต่ละคนไว้ในหน้านี้ แม้กด Home
+
+  function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+  function speak(t){ try{ speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(t); u.lang="en-US"; u.rate=.85; speechSynthesis.speak(u);}catch(e){} }
+  function show(id){
+    ["screenStart","screenGame","screenReport"].forEach(s=>$(s).classList.toggle("hidden", s!==id));
+    const g = id==="screenGame"; $("gloss").classList.toggle("hidden", !g);
+    document.body.style.paddingBottom = g ? "120px" : "30px"; window.scrollTo(0,0);
+  }
+  function words(text){
+    return text.split(" ").map(tok=>{
+      const k = tok.toLowerCase().replace(/[^a-z']/g,"");
+      return "<span class='w' data-w='"+esc(k)+"'>"+esc(tok)+"</span>";
+    }).join(" ");
+  }
+
+  // ----- เก็บ/โหลดความคืบหน้า (ตามชื่อ+เลขที่+ห้อง) -----
+  function ident(){
+    const n=$("fName").value.trim(), no=$("fNo").value.trim(), c=$("fClass").value.trim();
+    return {n,no,c, key:(n+"|"+no+"|"+c).toLowerCase(), ok:!!(n&&no&&c)};
+  }
+  function loadProg(k){
+    if(mem[k]) return mem[k];
+    let r = null;
+    try{ const raw = localStorage.getItem("ifq_"+k); if(raw){ const a = JSON.parse(raw); if(Array.isArray(a)&&a.length===N) r=a; } }catch(e){}
+    mem[k] = r || new Array(N).fill(null);
+    return mem[k];
+  }
+  function saveProg(){
+    mem[key] = results;
+    try{ localStorage.setItem("ifq_"+key, JSON.stringify(results)); }catch(e){}
+  }
+  const doneCount = r => r.filter(Boolean).length;
+  const scoreOf = r => r.filter(x=>x&&x.ok).length;
+
+  // ----- หน้า Home -----
+  function refreshHome(){
+    const id = ident();
+    let done = 0, sc = 0;
+    if(id.ok){ const r = loadProg(id.key); done = doneCount(r); sc = scoreOf(r); }
+    const st = $("homeStatus");
+    if(id.ok && done>0){
+      st.classList.remove("hidden");
+      st.textContent = done>=N ? "ทำครบ 20 ข้อแล้ว · คะแนน "+sc+" / "+N
+                               : "ความคืบหน้า: ทำแล้ว "+done+" / "+N+" ข้อ · คะแนนตอนนี้ "+sc;
+    } else st.classList.add("hidden");
+    $("startBtn").textContent = done>=N ? "ดู Score Report ✓" : done>0 ? "ทำต่อ (ข้อที่ "+(firstOpen(loadProg(id.key))+1)+") ▶" : "เริ่มเล่น ▶";
+    $("practiceBtn").classList.toggle("hidden", !(id.ok && done>=N));
+  }
+  function firstOpen(r){ const i=r.findIndex(x=>!x); return i<0 ? N : i; }
+  ["fName","fNo","fClass"].forEach(i=>$(i).addEventListener("input", refreshHome));
+
+  function begin(m){
+    const id = ident();
+    if(!id.ok){ $("startErr").classList.remove("hidden"); return; }
+    $("startErr").classList.add("hidden");
+    me = {name:id.n, no:id.no, cls:id.c}; key = id.key; mode = m;
+    results = loadProg(key);
+    if(m==="score"){
+      if(doneCount(results)>=N){ report(); return; }
+      qi = firstOpen(results);
+    } else { practice = new Array(N).fill(null); qi = 0; }
+    show("screenGame"); startQ();
+  }
+  $("startBtn").onclick = () => begin("score");
+  $("practiceBtn").onclick = () => begin("practice");
+  $("homeBtn").onclick = () => { show("screenStart"); refreshHome(); };
+  $("restartBtn").onclick = () => { show("screenStart"); refreshHome(); };
+
+  // ----- แถบแปลคำ -----
+  let curSpeak = "";
+  function gloss(k, el){
+    document.querySelectorAll(".w.on").forEach(x=>x.classList.remove("on"));
+    if(el) el.classList.add("on");
+    const e = LEX[k];
+    $("gWord").textContent = el ? el.textContent.replace(/[^A-Za-z']/g,"") : k;
+    if(e){ $("gPron").textContent = "อ่านว่า: "+e[0]; $("gMean").textContent = "แปลว่า: "+e[1]; }
+    else { $("gPron").textContent = ""; $("gMean").textContent = "ยังไม่มีคำแปลของคำนี้"; }
+    $("gFoot").style.display = "block"; $("gSpeak").style.display = "block";
+    curSpeak = $("gWord").textContent;
+  }
+  $("gSpeak").onclick = () => speak(curSpeak);
+
+  // ----- ทำข้อสอบ -----
+  const cur = () => mode==="score" ? results : practice;
+  function startQ(){
+    picked=null; confirmed=false;
+    const it = ITEMS[qi];
+    opts = shuffle([{text:it[1], ok:true}].concat(it[2].map(t=>({text:t, ok:false}))));
+    $("nextBtn").classList.add("hidden"); $("confirmBtn").classList.remove("hidden");
+    $("practiceBanner").classList.toggle("hidden", mode!=="practice");
+    render();
+  }
+  function render(){
+    const it = ITEMS[qi], r = cur();
+    $("qPill").textContent = "ข้อ "+(qi+1)+" / "+N;
+    $("scorePill").textContent = mode==="score" ? "คะแนน "+scoreOf(results) : "ฝึก "+scoreOf(practice);
+    $("bar").innerHTML = Array.from({length:N},(_,i)=>{
+      const h = r[i]; return "<span class='"+(h?(h.ok?"ok":"bad"):i===qi?"now":"")+"'></span>";
+    }).join("");
+    let h = "<div class='qrow'><span class='num'>"+(qi+1)+"</span><div class='qtxt'>"+words(it[0])+" <span class='blank'>_____</span></div>"+
+            "<button class='ghost mini' data-speak='"+esc(it[0])+"' aria-label='ฟัง'>🔊</button></div><div class='opts'>";
+    opts.forEach((o,k)=>{
+      let cls="opt", mark="";
+      if(confirmed){ if(o.ok){cls+=" ok"; mark="✅";} else if(k===picked){cls+=" bad"; mark="❌";} else cls+=" dim"; }
+      else if(k===picked) cls+=" sel";
+      h += "<div class='"+cls+"' data-opt='"+k+"'><button class='letter' data-pick='"+k+"' aria-label='เลือก "+LETTERS[k]+"'>"+LETTERS[k]+"</button>"+
+           "<div class='otxt'>"+words(o.text)+"</div><span class='mark'>"+mark+"</span>"+
+           "<button class='ghost mini' data-speak='"+esc(o.text)+"' aria-label='ฟัง'>🔊</button></div>";
+    });
+    h += "</div>";
+    if(confirmed){
+      const ok = opts[picked].ok;
+      h += "<div class='fbox "+(ok?"ok":"bad")+"'>"+(ok?"✅ ถูกต้อง! ":"❌ ยังไม่ถูก ")+"ประโยคที่ถูก: <b>"+words(it[0]+" "+it[1])+"</b> "+
+           "<button class='ghost mini' data-speak='"+esc(it[0]+" "+it[1])+"'>🔊</button></div>";
+    }
+    $("qcard").innerHTML = h;
+    $("confirmBtn").disabled = picked===null || confirmed;
+  }
+
+  document.addEventListener("click", e => {
+    const w = e.target.closest(".w");
+    if(w){ gloss(w.dataset.w, w); return; }
+    const sp = e.target.closest("[data-speak]"); if(sp){ speak(sp.dataset.speak); return; }
+    if($("screenGame").classList.contains("hidden") || confirmed) return;
+    const pk = e.target.closest("[data-pick]"); const op = e.target.closest("[data-opt]");
+    if(pk){ picked=+pk.dataset.pick; render(); }
+    else if(op){ picked=+op.dataset.opt; render(); }
+  });
+
+  $("confirmBtn").onclick = () => {
+    if(picked===null||confirmed) return;
+    confirmed=true;
+    const it=ITEMS[qi], ok=opts[picked].ok;
+    const rec = {ifText:it[0], correct:it[1], chosen:opts[picked].text, ok};
+    if(mode==="score"){ if(!results[qi]){ results[qi]=rec; saveProg(); } }   // นับเฉพาะครั้งแรก
+    else practice[qi]=rec;
+    $("confirmBtn").classList.add("hidden");
+    $("nextBtn").textContent = qi===N-1 ? "ดูคะแนน ✓" : "ข้อต่อไป ▶";
+    $("nextBtn").classList.remove("hidden");
+    render();
+  };
+  $("nextBtn").onclick = () => { if(qi<N-1){ qi++; startQ(); window.scrollTo(0,0);} else report(); };
+
+  // ----- รายงาน -----
+  function report(){
+    show("screenReport");
+    const data = mode==="score" ? results : practice, total = scoreOf(data);
+    const isPrac = mode==="practice";
+    $("repTitle").textContent = isPrac ? "🧪 ผลการฝึก" : "📋 Score Report";
+    $("repSub").textContent = isPrac ? "โหมดฝึก" : "If Clause Quiz: เหตุและผล · นับคะแนนจากการตอบครั้งแรก";
+    const bn = $("repBanner");
+    if(isPrac){ bn.classList.remove("hidden"); bn.textContent = "โหมดฝึก: ไม่นับคะแนน ใช้ส่งครูไม่ได้ ให้ส่ง Score Report ที่ได้จากการทำครั้งแรก (กลับหน้า Home แล้วกด “ดู Score Report”)"; }
+    else bn.classList.add("hidden");
+    const now=new Date();
+    $("repId").innerHTML = "<b>"+esc(me.name)+"</b> · เลขที่ "+esc(me.no)+" · ม.3/"+esc(me.cls)+"<br>"+
+      now.toLocaleDateString("th-TH",{day:"numeric",month:"long",year:"numeric"})+" "+now.toLocaleTimeString("th-TH",{hour:"2-digit",minute:"2-digit"});
+    $("repScore").textContent = total;
+    $("repMsg").textContent = total>=18?"ยอดเยี่ยมมาก! 🌟":total>=14?"ดีมาก! 👍":total>=10?"พอใช้ ทบทวนอีกนิดนะ 💪":"ลองฝึกใหม่และแตะคำดูคำแปลช่วยนะ 📖";
+    let g=""; for(let s=0;s<N;s+=5){ const sc=data.slice(s,s+5).filter(x=>x&&x.ok).length;
+      g += "<div class='crit'><span>ข้อ "+(s+1)+"–"+(s+5)+"</span><b>"+sc+" / 5</b></div>"; }
+    $("repGroups").innerHTML = g;
+    $("repList").innerHTML = data.map((h,i)=>{
+      if(!h) return "<div class='rl'>⬜ "+(i+1)+". ยังไม่ได้ทำ</div>";
+      return h.ok ? "<div class='rl ok'>✅ "+(i+1)+". "+esc(h.ifText+" "+h.correct)+"</div>"
+        : "<div class='rl bad'>❌ "+(i+1)+". "+esc(h.ifText)+" <b>"+esc(h.chosen)+"</b><small>ที่ถูก: "+esc(h.correct)+"</small></div>";
+    }).join("");
+  }
+  refreshHome();
+})();
+</script>
+</body>
+</html>
